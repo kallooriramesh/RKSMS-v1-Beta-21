@@ -1,5 +1,5 @@
 public class CommonUtility {
-    
+    publi string test;
     public static List<SelectOption> getToSMSFields(String objectName,String fieldSetName)
     {
         List<SelectOption> options = new List<SelectOption>();
