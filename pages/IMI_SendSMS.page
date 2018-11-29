@@ -1,0 +1,117 @@
+<apex:page standardController="Contact" extensions="IMI_SendSMSCtrl" action="{!getCurrentUserInfo}">
+    <apex:slds />
+    <apex:form >
+        
+        
+        <div class="demo-only" style="height: 640px;">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+                            <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close" />
+                            </svg>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Send SMS</h2>
+                    </header>
+                    <apex:outputPanel rendered="{!isIMIUser}" >
+                        
+                        
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            
+                            
+                            
+                            <apex:outputPanel id="sendSMSForm">
+                                
+                                
+                               
+                                 <apex:outputPanel rendered="{!isRequiredFieldsMissing}">
+                                    <div style="color:red;"> To And Message fields are required. </div>
+                                    
+                                </apex:outputPanel>
+                               
+                                
+                                <apex:outputPanel rendered="{!if(smsStatusCode == '1001',true,false)}">
+                                    <div style="color:green;"> {!smsStatus} </div>
+                                    
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!if(smsStatusCode != '1001',true,false)}">
+                                    <div style="color:red;"> {!smsStatus} </div>
+                                    
+                                    <div class="slds-form-element">
+                                        
+                                        <div class="slds-form-element__control">
+                                             <apex:actionSupport event="onchange" action="{!handleSelectedPhone}" reRender="sendSMSForm">
+                                                 <label class="slds-form-element__label" for="form-element-01">Select Field</label><br/>
+                                                <apex:selectList value="{!selectedTo}"  size="1" label="To">
+                                                    
+                                                    <apex:selectOptions value="{!ToOptions}"></apex:selectOptions>
+                                                    
+                                                </apex:selectList>
+                                            </apex:actionSupport><br/>
+                                            <label class="slds-form-element__label" for="form-element-01">To</label>
+                                            <apex:repeat value="{!$ObjectType.Contact.FieldSets.To_SMS_Fields}" var="field">
+                                                
+                                                <apex:outputfield value="{!Contact[field]}" rendered="{!if(selectedTo == field,true,false )}" />
+                                                
+                                            </apex:repeat>
+                                            
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                     
+                                    
+                                    
+                                     <div class="slds-form-element">
+                                        <label class="slds-form-element__label" for="form-element-01">Message</label>
+                                        <div class="slds-form-element__control">
+                                           <apex:inputTextarea rows="10" cols="50" value="{!message}"/>
+                                        </div>
+                                    </div>
+                                        
+                                   
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                        </div>
+                        <footer class="slds-modal__footer" id="imiUserFooter">
+                            <apex:outputPanel rendered="{!if(smsStatusCode != '1001',true,false)}">
+                                <apex:commandButton action="{!cancel}" value="Cancel" 
+                                                    immediate="true" styleClass="slds-button slds-button_neutral"
+                                                    html-formnovalidate="formnovalidate" />
+                                
+                                <apex:commandButton action="{!sendSMS}" value="Send" reRender="sendSMSForm"
+                                                    styleClass="slds-button slds-button_brand"
+                                                    />
+                            </apex:outputPanel>
+                            
+                            <apex:outputPanel rendered="{!if(smsStatusCode == '1001',true,false)}">
+                                <apex:commandButton action="{!cancel}" value="Close" 
+                                                    immediate="true" styleClass="slds-button slds-button_neutral"
+                                                    html-formnovalidate="formnovalidate" />
+                                
+                            </apex:outputPanel>
+                            
+                            
+                        </footer>
+                    </apex:outputPanel>
+                    
+                    
+                    <apex:outputPanel rendered="{!!isIMIUser}">
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            Please assign the IMI Permission sets to user
+                        </div>
+                        <footer class="slds-modal__footer">
+                            <apex:commandButton action="{!cancel}" value="Close" 
+                                                immediate="true" styleClass="slds-button slds-button_neutral"
+                                                html-formnovalidate="formnovalidate" />
+                            
+                        </footer>
+                    </apex:outputPanel>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open" id="modelDiv"></div>
+        </div>
+    </apex:form>
+</apex:page>

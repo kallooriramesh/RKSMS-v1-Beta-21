@@ -1,0 +1,182 @@
+<apex:page controller="IMI_HomeCtrl" action="{!getCurrentUserInfo}">
+
+    <apex:slds />
+    
+    <div class="slds-section slds-is-open">
+        <h3 class="slds-section__title slds-theme_shade">
+            <span class="slds-truncate slds-p-horizontal_small" title="General Information">General Information</span>
+        </h3>
+        <div aria-hidden="false" class="slds-section__content">
+            <p>
+                IMImobile is a cloud communications software and solutions provider that enables companies to use mobile and digital technologies to improve and automate customer experience and engagement.
+                
+                IMImobile's cloud software platform manages over 42 billion messages and 44 billion commerce transactions a year across the world. Organisations that trust us to deliver smarter digital customer engagement include Centrica, AA, O2, EE, BT, Foxtons, Pizza Hut, Vodafone, ATT, MTN, three of the major retail banks in the UK and public-sector organisations in India, US and the UK.
+            </p>
+        </div>
+    </div>
+    
+    <div class="slds-section slds-is-open">
+        <h3 class="slds-section__title slds-theme_shade">
+            <span class="slds-truncate slds-p-horizontal_small" title="Adminstration Details">Adminstration Details</span>
+        </h3>
+        <div aria-hidden="false" class="slds-section__content">
+            <apex:outputPanel rendered="{!isIMIAdmin}" id="adminPannel">
+                <div class="slds-grid slds-gutters" style="padding: 15px;">
+                    
+                    <div class="slds-col slds-size_1-of-2">
+                        
+                        <article class="slds-card" style="height: 150px;">
+                            <apex:form >
+                                <div class="slds-card__header slds-grid">
+                                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                        <div class="slds-media__figure">
+                                            <span title="Activity Settings">
+                                                
+                                                <svg aria-hidden="true" class="slds-icon">
+                                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                                         xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/doctype-sprite/svg/symbols.svg#keynote')}"></use>
+                                                </svg>
+                                                
+                                               
+                                                <span class="slds-assistive-text">Key Settings</span>
+                                            </span>
+                                        </div>
+                                        <div class="slds-media__body">
+                                            <h2 class="slds-card__header-title">
+                                                <span  class="slds-card__header-link slds-truncate">Key Settings</span>
+                                            </h2>
+                                        </div>
+                                        <div class="slds-no-flex">
+                                            <apex:outputPanel id="keyButtons">
+                                                <apex:outputPanel rendered="{!!isIMIKeyUpdated}" id="keySave">
+                                                    <apex:commandButton styleClass="slds-button slds-button_neutral" 
+                                                                        action="{!updateIMIKeyInfo}" value="Save" reRender="keySettings,keyButtons"/>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!isIMIKeyUpdated}" id="keyClose">
+                                                    <apex:commandButton styleClass="slds-button slds-button_neutral" 
+                                                                        action="{!closeKeySettings}" value="Done" reRender="keySettings,keyButtons"/>
+                                                </apex:outputPanel>
+                                            </apex:outputPanel>
+                                        </div>
+                                    </header>
+                                </div>
+                                <div class="slds-card__body slds-card__body_inner">
+                                    <apex:outputPanel id="keySettings">
+                                        <apex:outputPanel rendered="{!isIMIKeyUpdated}">
+                                            
+                                            <div class="slds-form-element">
+                                                <div class="slds-form-element__control">
+                                                    Key Details updated successfully.
+                                                    
+                                                </div>
+                                                
+                                            </div>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel rendered="{!!isIMIKeyUpdated}">
+                                            <apex:outputPanel rendered="{!NOT(ISBLANK(IMIKEY))}">
+                                                <div class="slds-form-element">
+                                                    <div class="slds-form-element__control">
+                                                        <span style="color:red;">{!IMIKEYERROR}</span>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </apex:outputPanel>
+                                            <div class="slds-form-element">
+                                                <label class="slds-form-element__label" for="text-input-id-1">KEY
+                                                    <abbr class="slds-required" title="required">* </abbr>
+                                                </label>
+                                                <div class="slds-form-element__control">
+                                                    
+                                                    <apex:inputText styleClass="slds-input" label="KEY" value="{!IMIKEY}"/>
+                                                    
+                                                </div>
+                                                
+                                            </div>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>                                    
+                                </div>
+                            </apex:form>
+                        </article>
+                        
+                        
+                    </div>
+                    
+                    <div class="slds-col slds-size_1-of-2">
+                        
+                        <article class="slds-card" style="height: 150px;">
+                            <apex:form >
+                                <div class="slds-card__header slds-grid">
+                                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                        <div class="slds-media__figure">
+                                            <span  class="slds-icon_container slds-icon-standard-account" title="Activity Settings">
+                                                <svg aria-hidden="true" class="slds-icon">
+                                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                                         xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/standard-sprite/svg/symbols.svg#custom')}"></use>
+                                                </svg>
+                                                <span class="slds-assistive-text">Activity Settings</span>
+                                            </span>
+                                        </div>
+                                        <div class="slds-media__body">
+                                            <h2 class="slds-card__header-title">
+                                                <span class="slds-card__header-link slds-truncate">Activity Settings</span>
+                                            </h2>
+                                        </div>
+                                        <div class="slds-no-flex">
+                                            <apex:outputPanel id="logButtons"> 
+                                                <apex:outputPanel rendered="{!!isSettingsUpdated}">
+                                                    <apex:commandButton styleClass="slds-button slds-button_neutral"
+                                                                        action="{!updateSettings}" value="Save" reRender="activitySettings,logButtons"/>
+                                                </apex:outputPanel>
+                                                
+                                                <apex:outputPanel rendered="{!isSettingsUpdated}">
+                                                    <apex:commandButton styleClass="slds-button slds-button_neutral"
+                                                                        action="{!closeLogSettings}" value="Done" reRender="activitySettings,logButtons"/>
+                                                </apex:outputPanel>
+                                            </apex:outputPanel>
+                                        </div>
+                                    </header>
+                                </div>
+                                <div class="slds-card__body slds-card__body_inner">
+                                    <apex:outputPanel id="activitySettings">
+                                        <apex:outputPanel rendered="{!!isSettingsUpdated}">
+                                            <div class="slds-form-element">
+                                                <div class="slds-form-element__control">
+                                                    <span class="slds-form-element__label">Create Log</span>
+                                                    <apex:inputCheckBox value="{!checkLog}"/>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="slds-form-element">
+                                                <div class="slds-form-element__control">
+                                                    
+                                                    <span class="slds-form-element__label">Create Activity</span>
+                                                    <apex:inputCheckBox value="{!checkAcitivityLog}"/>
+                                                    
+                                                </div>
+                                            </div>
+                                        </apex:outputPanel>
+                                        
+                                        <apex:outputPanel rendered="{!isSettingsUpdated}">
+                                            Settings updated sucessfully.
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+                                </div>
+                                
+                                <br/>
+                            </apex:form>
+                        </article>
+                        
+                        
+                    </div>
+                </div>                    
+            </apex:outputPanel>
+            
+            <apex:outputPanel rendered="{!!isIMIAdmin}">
+            	Please assign the IMI Admin permission set to setup the application settings.
+            </apex:outputPanel>
+        </div>
+    </div>
+    
+    
+    
+</apex:page>
